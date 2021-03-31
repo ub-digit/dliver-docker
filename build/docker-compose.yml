@@ -1,0 +1,17 @@
+version: "3.5"
+services:
+  frontend:
+    image: docker.ub.gu.se/dliver-frontend:${GIT_REVISION_FRONTEND}
+    build:
+      context: ./frontend
+      args:
+        - GIT_REPO_URL_FRONTEND=${GIT_REPO_URL_FRONTEND}
+        - GIT_REVISION_FRONTEND=${GIT_REVISION_FRONTEND}
+  backend:
+    image: docker.ub.gu.se/dliver-backend:${GIT_REVISION_BACKEND}
+    build:
+      context: ./backend
+      args:
+        - GIT_REPO_URL_BACKEND=${GIT_REPO_URL_BACKEND}
+        - GIT_REVISION_BACKEND=${GIT_REVISION_BACKEND}
+  
