@@ -14,4 +14,13 @@ services:
       args:
         - GIT_REPO_URL_BACKEND=${GIT_REPO_URL_BACKEND}
         - GIT_REVISION_BACKEND=${GIT_REVISION_BACKEND}
+  postgres:
+  
+    image: dliver-postgres
+    build:
+      context: ./postgres 
+      args:
+        - GIT_REPO_URL_POSTGRES=${GIT_REPO_URL_POSTGRES}
+        - GIT_REVISION_POSTGRES=${GIT_REVISION_POSRGRES}
+
   
