@@ -1,8 +1,8 @@
 FROM alpine:latest AS release
 RUN apk add --no-cache git
 
-ARG GIT_REVISION
-ARG GIT_REPO_URL
+ARG GIT_REVISION_POSTGRES
+ARG GIT_REPO_URL_POSTGRES
 
 WORKDIR /root/
 
@@ -11,4 +11,4 @@ RUN set -ex \
 
 FROM postgres:9.4
 
-COPY --from=release /root/release/docker/build/postgres/postgres.conf /etc/postgresql/postgresql.conf
+COPY --from=release /root/release/build/postgres/postgres.conf /etc/postgresql/postgresql.conf
