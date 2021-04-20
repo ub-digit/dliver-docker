@@ -13,8 +13,11 @@ FROM solr:5.5.5
 
 WORKDIR /opt/solr/server/solr
 RUN mkdir dliver dliver/conf dliver/data
+RUN mkdir lars
 
-COPY --from=release /root/release/solr_config/dliver/core.properties dliver/
-COPY --from=release /root/release/solr_config/dliver/conf/schema.xml dliver/conf/
-COPY --from=release /root/release/solr_config/dliver/conf/solrconfig.xml dliver/conf/
 
+#COPY --from=release /root/release/solr_config/dliver/core.properties dliver/
+#COPY --from=release /root/release/solr_config/dliver/conf/schema.xml dliver/conf/
+#COPY --from=release /root/release/solr_config/dliver/conf/solrconfig.xml dliver/conf/
+
+COPY --from=release /root/release lars/ 

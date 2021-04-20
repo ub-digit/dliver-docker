@@ -1,6 +1,18 @@
 version: "3.5"
 
 services:
+  backend:
+    image: docker.ub.gu.se/dliver-backend:${GIT_REVISION_BACKEND}
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "udp://127.0.0.1:514"
+        syslog-format: "rfc5424"
+        syslog-facility: ${SYSLOG_FACILITY}
+        tag: ${SYSLOG_TAG_BACKEND}
+    volumes:
+      - ${DLIVER_STORE_HOST_PATH}:${STORE_PATH}
+      - ${DLIVER_CACHE_HOST_PATH}:${CACHE_PATH}
   frontend:
     image: docker.ub.gu.se/dliver-frontend:${GIT_REVISION_FRONTEND}
     logging:
@@ -11,7 +23,8 @@ services:
         syslog-facility: ${SYSLOG_FACILITY}
         tag: ${SYSLOG_TAG_FRONTEND}
     ports:
-      # Port differs in release image for ember
       - ${FRONTEND_PORT}:8080
-  backend:
-    image: docker.ub.gu.se/dliver-backend:${GIT_REVISION_BACKEND}
+  postgres:
+    image: docker.ub.gu.se/dliver-postgres:${GIT_REVISION_POSTGRES}
+  solr:
+    image: docker.ub.gu.se/dliver-solr:${GIT_REVISION_SOLR}

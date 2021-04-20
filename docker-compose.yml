@@ -20,6 +20,7 @@ services:
             - ${RAILS_SERVICE_PORT}:3000
 
     frontend:
+        restart: always
         # Keep the stdin open, so we can attach to our app container's process
         # and do things such as debugging, etc
         stdin_open: true
@@ -28,19 +29,15 @@ services:
             - EMBER_ENVIRONMENT=${ENVIRONMENT}
             - BACKEND_URL=${BACKEND_URL}
             - BACKEND_SERVICE_PORT=${RAILS_SERVICE_PORT}
-    db:
-        image: postgres:9.4
+    postgres:
         restart: always
         environment:
             - POSTGRES_DB=${DB}
             - POSTGRES_USER=${DB_USER}
             - POSTGRES_PASSWORD=${DB_PASSWORD}
         volumes:
-            - ./build/postgres/postgres.conf:/etc/postgresql/postgresql.conf
+            
             - ./postgres-initdb.d:/docker-entrypoint-initdb.d
-            - dbdata:/var/lib/postgresql/data
+            - ${DB_DIR}:/var/lib/postgresql/data
     solr:
-        image: dliver-solr:002
         restart: always
-volumes:
-    dbdata:
