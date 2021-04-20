@@ -4,7 +4,7 @@ FROM ubuntu:latest AS release
 
 RUN mkdir /srv/__STORE
 
-ADD dliver-test-data /srv/__STORE/
+ADD data /srv/__STORE/
 
 VOLUME /srv/__STORE
 

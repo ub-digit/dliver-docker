@@ -15,14 +15,14 @@ services:
         - GIT_REPO_URL_BACKEND=${GIT_REPO_URL_BACKEND}
         - GIT_REVISION_BACKEND=${GIT_REVISION_BACKEND}
   postgres:
-    image: dliver-postgres:${GIT_REVISION_POSTGRES}
+    image: docker.ub.gu.se/dliver-postgres:${GIT_REVISION_POSTGRES}
     build:
       context: ./postgres 
       args:
         - GIT_REPO_URL_POSTGRES=${GIT_REPO_URL_POSTGRES}
         - GIT_REVISION_POSTGRES=${GIT_REVISION_POSTGRES}
   solr:
-    image: dliver-solr:${GIT_REVISION_SOLR}
+    image: docker.ub.gu.se/dliver-solr:${GIT_REVISION_SOLR}
     build:
       context: ./solr
       args:
