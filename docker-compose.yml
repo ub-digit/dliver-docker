@@ -1,18 +1,7 @@
-version: "3.5"
+version: '3.5'
 services:
-    #db:
-    #    restart: always
-    #    environment:
-    #        - POSTGRES_DB=${DB}
-    #        - POSTGRES_USER=${DB_USER}
-    #        - POSTGRES_PASSWORD=${DB_PASSWORD}
-    #    volumes:
-    #        - ./postgres-initdb.d:/docker-entrypoint-initdb.d
-    #        - dbdata:/var/lib/postgresql/data
     backend:
         restart: always
-       # depends_on:
-       #     - db
         environment:
             - ENVIRONMENT=${ENVIRONMENT}
             - DB_HOST=${DB_HOST}
@@ -23,10 +12,15 @@ services:
             - SECRET_KEY_BASE=${SECRET_KEY_BASE}
             - AUTH_URL=${AUTH_URL}
             - SOLR_URL=${SOLR_URL}
+            - CACHE_PATH=${CACHE_PATH}
+            - STORE_PATH=${STORE_PATH}
+            - DEFAULT_THUMBNAIL=${DEFAULT_THUMBNAIL}
+            - THUMBNAIL_FILE_GROUP=${THUMBNAIL_FILE_GROUP}
         ports:
             - ${RAILS_SERVICE_PORT}:3000
 
     frontend:
+        restart: always
         # Keep the stdin open, so we can attach to our app container's process
         # and do things such as debugging, etc
         stdin_open: true
@@ -35,5 +29,15 @@ services:
             - EMBER_ENVIRONMENT=${ENVIRONMENT}
             - BACKEND_URL=${BACKEND_URL}
             - BACKEND_SERVICE_PORT=${RAILS_SERVICE_PORT}
-volumes:
-    dbdata:
+    postgres:
+        restart: always
+        environment:
+            - POSTGRES_DB=${DB}
+            - POSTGRES_USER=${DB_USER}
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
+        volumes:
+            
+            - ./postgres-initdb.d:/docker-entrypoint-initdb.d
+            - ${DB_DIR}:/var/lib/postgresql/data
+    solr:
+        restart: always

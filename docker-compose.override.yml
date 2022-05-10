@@ -1,8 +1,19 @@
 #this is for running in development
-version: "3.5"
+version: '3.5'
 services:
+    backend:
+        depends_on:
+            - data-container
+        image: docker.ub.gu.se/rails:ruby-2.3.1-002
+        # test data 
+        # data-cointainer holds a set of Mets packages for testing purpose
+        volumes_from:
+            - data-container:rw
+        volumes:
+            - ../dliver-server:/usr/src/app
+        command: ["sh", "-c", "bundle install && rm -f /usr/src/app/tmp/pids/server.pid && rails server -b 0.0.0.0"]
     frontend:
-        image: ember-dev:1.13.8
+        image: docker.ub.gu.se/ember-dev:1.13.8
         ports:
             # server
             - 4200:4200
@@ -12,28 +23,17 @@ services:
             - 7357:7357
         volumes:
             - ../dliver:/home/node/app
-    backend:
-        image: docker.ub.gu.se/rails:ruby-2.3.1-002
-        volumes:
-            - ../dliver-server:/usr/src/app
-        command: ["sh", "-c", "bundle install && rm -f /usr/src/app/tmp/pids/server.pid && rails server -b 0.0.0.0"]
-    db:
+    postgres:
         image: postgres:9.4
-        restart: always
-        environment:
-            - POSTGRES_DB=${DB}
-            - POSTGRES_USER=${DB_USER}
-            - POSTGRES_PASSWORD=${DB_PASSWORD}
         volumes:
             - ./build/postgres/postgres.conf:/etc/postgresql/postgresql.conf
-            - ./postgres-initdb.d:/docker-entrypoint-initdb.d
-            - dbdata:/var/lib/postgresql/data
     solr:
-        image: dliver-solr:002
-        restart: always
+        image: solr:5.5.5
+        volumes:
+            - ./solr_config/dliver:/opt/solr/server/solr/dliver
+    data-container:
+        image: docker.ub.gu.se/dliver-development-data:001
 
-volumes:
-    dbdata:
         
         
             

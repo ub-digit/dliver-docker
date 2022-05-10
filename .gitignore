@@ -1,1 +1,2 @@
 postgres-initdb.d/dliver_20210323.sql
+build/test-data/data
